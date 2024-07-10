@@ -1,5 +1,4 @@
-# flink-with-kafka-local
-Apache Flink and Kafka test project
+# flink-kafka-streaming-example
 
 ## Prerequisites
 
