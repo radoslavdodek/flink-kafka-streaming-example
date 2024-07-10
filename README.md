@@ -66,4 +66,4 @@ Go to http://localhost:8081/#/submit, and upload that JAR file. After uploading,
 
 Now the Flink job should be running. You can see the stream data below (the `input-topic` on the left and the `output-topic` on the right):
 
-![](assets/stream-preview.gif)
+![](assets/streams-preview.gif)
