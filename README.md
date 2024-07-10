@@ -1,4 +1,4 @@
-# flink-kafka-streaming-example
+# Apache Flink / Kafka streaming example
 
 ## Prerequisites
 
