@@ -18,6 +18,9 @@ Now you should be able to access the Apache Flink dashboard at http://localhost:
 
 ## Starting the producer of dummy messages
 
+The `kafka-dummy-producer` is a simple Java application that sends dummy messages to the `input-topic` every second.
+See `./kafka-dummy-producer/src/main/java/eu/indek/clickstream/KafkaDummyProducer.java`
+
 - Build the producer app:
   ```
   ./gradlew --build-file kafka-dummy-producer/build.gradle shadowJar
@@ -38,6 +41,9 @@ Now your `input-topic` is receiving messages in the following format:
 ```
 
 ## Building the Flink JAR
+
+This sample project contains a simple Flink job that reads from the `input-topic`, processes the messages, and writes to the `output-topic`.
+See `./src/main/java/eu/indek/clickstream/DataStreamJob.java`
 
 To package your job for submission to Flink, use the following.
 Note that we are setting the `JAVA_HOME` environment variable to ensure that the correct version of Java is used
