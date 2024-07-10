@@ -4,7 +4,7 @@
 
 In order to run this project locally, you will need:
 - Docker
-- Java 11 (Apache Flink requires Java 8 or 11 for the job JAR files)
+- Java 11 (Apache Flink requires Java 8 or 11 for the application JAR files)
 - Gradle
 
 ## Running the Apache Flink and Kafka locally
