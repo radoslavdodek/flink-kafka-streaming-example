@@ -1,0 +1,3 @@
+rootProject.name = 'ArticleClickStreamApp'
+include 'kafka-dummy-producer'
+
