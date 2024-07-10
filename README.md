@@ -39,18 +39,18 @@ Now your `input-topic` is receiving messages in the following format:
 }
 ```
 
-## Building the Flink JAR
+## Creating the Flink application JAR file
 
-This sample project contains a simple Flink job that:
+This sample project contains a simple Flink application that:
 - reads from the `input-topic` which contains messages in JSON format 
 - transforms the messages to a CSV format
 - and writes them to the `output-topic`.
 
 See `./src/main/java/eu/indek/clickstream/DataStreamJob.java`
 
-To package your job for submission to Flink, use the following.
-Note that we are setting the `JAVA_HOME` environment variable to ensure that the correct version of Java is used
-to build the JAR file (Java 11). Change the path to the correct one if needed.
+To package your application for submission to Flink, use the following.
+Note that we are setting the `JAVA_HOME` environment variable to Java 11. That's because Apache Flick requires the application JAR files to be build using either Java 8 or 11. 
+Change the path to the correct one if needed.
 
 ```bash
 JAVA_HOME=/usr/lib/jvm/jdk-11.0.13
