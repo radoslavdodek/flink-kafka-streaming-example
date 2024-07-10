@@ -5,7 +5,7 @@ Apache Flink and Kafka test project
 
 In order to run this project locally, you will need:
 - Docker
-- Java 11
+- Java 11 (Apache Flink requires Java 8 or 11)
 - Gradle
 
 ## Running the Apache Flink and Kafka
