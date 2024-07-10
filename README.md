@@ -42,7 +42,11 @@ Now your `input-topic` is receiving messages in the following format:
 
 ## Building the Flink JAR
 
-This sample project contains a simple Flink job that reads from the `input-topic`, processes the messages, and writes to the `output-topic`.
+This sample project contains a simple Flink job that:
+- reads from the `input-topic` which contains messages in JSON format 
+- transforms the messages to a CSV format
+- and writes them to the `output-topic`.
+
 See `./src/main/java/eu/indek/clickstream/DataStreamJob.java`
 
 To package your job for submission to Flink, use the following.
