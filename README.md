@@ -48,16 +48,16 @@ This sample project contains a simple Flink application that:
 
 See `./src/main/java/eu/indek/clickstream/DataStreamJob.java`
 
-To package your application for submission to Flink, use the following.
-Note that we are setting the `JAVA_HOME` environment variable to Java 11. That's because Apache Flick requires the application JAR files to be build using either Java 8 or 11. 
-Change the path to the correct one if needed.
+To package your application for submission to Flink, use the following commands. 
+Note that we are setting the `JAVA_HOME` environment variable to Java 11 because Apache Flink requires the application JAR files to be built using either Java 8 or 11. 
+Change the path if needed.
 
 ```bash
 JAVA_HOME=/usr/lib/jvm/jdk-11.0.13
 ./gradlew shadowJar
 ```
 
-The jar will be created here: `./build/libs/ArticleClickStreamApp-0.1-SNAPSHOT-all.jar`
+The JAR file will be created here: `./build/libs/ArticleClickStreamApp-0.1-SNAPSHOT-all.jar`
 
 Go to http://localhost:8081/#/submit, and upload that JAR file. After uploading, click on it, and click SUBMIT.
 
