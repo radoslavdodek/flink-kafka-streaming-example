@@ -4,7 +4,7 @@
 
 In order to run this project locally, you will need:
 - Docker
-- Java 11 (Apache Flink requires Java 8 or 11)
+- Java 11 (Apache Flink requires Java 8 or 11 for the application JAR files)
 - Gradle
 
 ## Running the Apache Flink and Kafka locally
@@ -53,25 +53,25 @@ Now your `input-topic` is receiving messages in the following format:
 }
 ```
 
-## Building the Flink JAR
+## Creating the Flink application JAR file
 
-This sample project contains a simple Flink job that:
+This sample project contains a simple Flink application that:
 - reads from the `input-topic` which contains messages in JSON format 
 - transforms the messages to a CSV format
 - and writes them to the `output-topic`.
 
 See `./src/main/java/eu/indek/clickstream/DataStreamJob.java`
 
-To package your job for submission to Flink, use the following.
-Note that we are setting the `JAVA_HOME` environment variable to ensure that the correct version of Java is used
-to build the JAR file (Java 11). Change the path to the correct one if needed.
+To package your application for submission to Flink, use the following commands. 
+Note that we are setting the `JAVA_HOME` environment variable to Java 11 because Apache Flink requires the application JAR files to be built using either Java 8 or 11. 
+Change the path if needed.
 
 ```bash
 JAVA_HOME=/usr/lib/jvm/jdk-11.0.13
 ./gradlew shadowJar
 ```
 
-The jar will be created here: `./build/libs/ArticleClickStreamApp-0.1-SNAPSHOT-all.jar`
+The JAR file will be created here: `./build/libs/ArticleClickStreamApp-0.1-SNAPSHOT-all.jar`
 
 Go to http://localhost:8081/#/submit, and upload that JAR file. After uploading, click on it, and click SUBMIT.
 
