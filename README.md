@@ -56,7 +56,8 @@ The project contains a [docker-compose.yml](./docker-compose.yml) file specifies
   
 Run the following command to start the services:  
 ```shell  
-docker-compose up -d```  
+docker-compose up -d
+```  
   
 Now you should be able to access the Apache Flink dashboard at http://localhost:8081  
   
@@ -68,7 +69,9 @@ See [KafkaDummyProducer](./kafka-dummy-producer/src/main/java/eu/indek/clickstre
 - Build the producer app:  
   ```  
   ./gradlew --build-file kafka-dummy-producer/build.gradle shadowJar  
-  ```- Run the producer app:  
+  ```
+
+- Run the producer app:
   ```  
   java -jar kafka-dummy-producer/build/libs/kafka-dummy-producer-0.1-SNAPSHOT-all.jar input-topic  
   ```  
@@ -76,7 +79,10 @@ Now your `input-topic` is receiving messages in the following format:
   
 ```json  
 {  
-  "articleId": "9",  "action": "CLICK",  "eventTime": "2024-07-10T20:42:16"}  
+  "articleId": "9",  
+  "action": "CLICK",  
+  "eventTime": "2024-07-10T20:42:16"
+}  
 ```  
   
 ### The Apache Flink application  
