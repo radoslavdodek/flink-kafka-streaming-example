@@ -32,6 +32,7 @@ public class DataStreamJob {
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         if (env instanceof LocalStreamEnvironment) {
+            // Set the parallelism to 1 for local development
             env.setParallelism(1);
         }
 
@@ -63,7 +64,7 @@ public class DataStreamJob {
         // Sink
         transformedStream.sinkTo(sink);
 
-        env.execute("Kafka Flink Job");
+        env.execute("DataStreamJob");
     }
 
     private static Source<String, ?, ?> createSource(StreamExecutionEnvironment env) {
@@ -95,8 +96,10 @@ public class DataStreamJob {
 
     private static Sink<String> createSink(StreamExecutionEnvironment env) {
         if (env instanceof LocalStreamEnvironment) {
+            // Local environment
             return new PrintSink<>("LocalSink");
         } else {
+            // Non local environment
             return KafkaSink.<String>builder()
                     .setBootstrapServers(KAFKA_BROKER)
                     .setRecordSerializer(
