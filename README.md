@@ -17,17 +17,14 @@ This is the simplest way to test your Flink job. Execute the `main` method of th
 You should see output similar to the following in your console:
 
 ```
-ExecutionGraph - Source: Kafka Source -> Map -> Sink: Writer (1/1) (55f2_0_0) switched from INITIALIZING to RUNNING.
-LocalSink> 8;CLICK;2024-07-11T11:38:20Z
-LocalSink> 6;CLICK;2024-07-11T11:38:20Z
-LocalSink> 10;CLICK;2024-07-11T11:38:20Z
-LocalSink> 8;CLICK;2024-07-11T11:38:20Z
-LocalSink> 7;CLICK;2024-07-11T11:38:20Z
-LocalSink> 2;CLICK;2024-07-11T11:38:20Z
-LocalSink> 9;CLICK;2024-07-11T11:38:20Z
-LocalSink> 6;CLICK;2024-07-11T11:38:20Z
-LocalSink> 10;CLICK;2024-07-11T11:38:20Z
-...
+ExecutionGraph - Source -> Map -> Sink: Writer (1/1) switched from INITIALIZING to RUNNING.
+LocalSink> 8;CLICK;2024-07-11T11:56:55Z
+LocalSink> 5;CLICK;2024-07-11T11:56:55Z
+LocalSink> 7;CLICK;2024-07-11T11:56:55Z
+LocalSink> 7;CLICK;2024-07-11T11:56:55Z
+LocalSink> 6;CLICK;2024-07-11T11:56:55Z
+LocalSink> 8;CLICK;2024-07-11T11:56:55Z
+LocalSink> 9;CLICK;2024-07-11T11:56:55Z
 ```
 
 ## 2. Running the Flink Application in Docker
