@@ -17,7 +17,7 @@ This is the simplest way to test your Flink job. Execute the `main` method of th
 You should see output similar to the following in your console:
 
 ```
-ExecutionGraph - Source: Kafka Source -> Map -> Sink: Writer (1/1) (370c048873680b1ac288828f6bce6bfd_cbc357ccb763df2852fee8c4fc7d55f2_0_0) switched from INITIALIZING to RUNNING.
+ExecutionGraph - Source: Kafka Source -> Map -> Sink: Writer (1/1) (55f2_0_0) switched from INITIALIZING to RUNNING.
 LocalSink> 8;CLICK;2024-07-11T11:38:20Z
 LocalSink> 6;CLICK;2024-07-11T11:38:20Z
 LocalSink> 10;CLICK;2024-07-11T11:38:20Z
