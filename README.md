@@ -13,7 +13,7 @@ The project contains a [docker-compose.yml](./docker-compose.yml) file specifies
 ```
 ┌─────────────────────────────────────┐
 │ Apache Kafka                        │
-└─────────────────────────────────────┘ 
+└─────────────────────────────────────┘
 ┌─────────────────────────────────────┐
 │ Apache Flink                        │
 │  ┌────────────┐      ┌───────────┐  │
@@ -32,7 +32,7 @@ Now you should be able to access the Apache Flink dashboard at http://localhost:
 ## Produce sample messages to the input topic
 
 The `kafka-dummy-producer` is a simple Java application that sends sample messages to the `input-topic` every second.
-See `./kafka-dummy-producer/src/main/java/eu/indek/clickstream/KafkaDummyProducer.java`
+See [KafkaDummyProducer](./kafka-dummy-producer/src/main/java/eu/indek/clickstream/KafkaDummyProducer.java).
 
 - Build the producer app:
   ```
