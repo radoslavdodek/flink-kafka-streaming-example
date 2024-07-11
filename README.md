@@ -38,7 +38,7 @@ You will need:
   
 ### Starting the Apache Flink and Kafka Services
   
-The project contains a [docker-compose.yml](./docker-compose.yml) file specifies these services:  
+The project contains a [docker-compose.yml](./docker-compose.yml) file which specifies these services:  
 ```  
 ┌─────────────────────────────────────┐  
 │ Apache Kafka                        │  
