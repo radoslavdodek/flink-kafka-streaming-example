@@ -29,9 +29,9 @@ docker-compose up -d
 
 Now you should be able to access the Apache Flink dashboard at http://localhost:8081
 
-## Starting the producer of dummy messages
+## Produce sample messages to the input topic
 
-The `kafka-dummy-producer` is a simple Java application that sends dummy messages to the `input-topic` every second.
+The `kafka-dummy-producer` is a simple Java application that sends sample messages to the `input-topic` every second.
 See `./kafka-dummy-producer/src/main/java/eu/indek/clickstream/KafkaDummyProducer.java`
 
 - Build the producer app:
@@ -53,25 +53,29 @@ Now your `input-topic` is receiving messages in the following format:
 }
 ```
 
-## Creating the Flink application JAR file
+## The Flink application
 
 This sample project contains a simple Flink application that:
-- reads from the `input-topic` which contains messages in JSON format 
-- transforms the messages to a CSV format
-- and writes them to the `output-topic`.
+- Reads from the `input-topic` containing messages in JSON format
+- Transforms these messages into CSV format
+- Writes the transformed messages to the `output-topic`
 
-See `./src/main/java/eu/indek/clickstream/DataStreamJob.java`
+See the main application class: [DataStreamJob](./src/main/java/eu/indek/clickstream/DataStreamJob.java)
+
+### Packaging the Flink Application into a fat JAR
 
 To package your application for submission to Flink, use the following commands. 
-Note that we are setting the `JAVA_HOME` environment variable to Java 11 because Apache Flink requires the application JAR files to be built using either Java 8 or 11. 
-Change the path if needed.
+Ensure that the `JAVA_HOME` environment variable is set to Java 11, as Apache Flink requires the application JAR files 
+to be built using either Java 8 or 11. Adjust the path if necessary.
 
 ```bash
 JAVA_HOME=/usr/lib/jvm/jdk-11.0.13
 ./gradlew shadowJar
 ```
 
-The JAR file will be created here: `./build/libs/ArticleClickStreamApp-0.1-SNAPSHOT-all.jar`
+The JAR file will be created at: `./build/libs/ArticleClickStreamApp-0.1-SNAPSHOT-all.jar`
+
+### Submitting the Flink Job
 
 Go to http://localhost:8081/#/submit, and upload that JAR file. After uploading, click on it, and click SUBMIT.
 
