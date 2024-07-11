@@ -78,7 +78,7 @@ Now your `input-topic` is receiving messages in the following format:
 {  
   "articleId": "9",  
   "action": "CLICK",  
-  "eventTime": "2024-07-10T20:42:16"
+  "eventTime": "2024-07-10T20:42:16Z"
 }  
 ```  
   
