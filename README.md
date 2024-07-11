@@ -9,6 +9,20 @@ In order to run this project locally, you will need:
 
 ## Running the Apache Flink and Kafka locally
 
+The project contains a `docker-compose.yml` file specifies these services:
+```
+┌─────────────────────────────────────┐
+│ Apache Kafka                        │
+└─────────────────────────────────────┘ 
+┌─────────────────────────────────────┐
+│ Apache Flink                        │
+│  ┌────────────┐      ┌───────────┐  │
+│  │ JobManager │      │TaskManager│  │
+│  └────────────┘      └───────────┘  │
+└─────────────────────────────────────┘
+```
+
+Run the following command to start the services:
 ```shell
 docker-compose up -d
 ```
