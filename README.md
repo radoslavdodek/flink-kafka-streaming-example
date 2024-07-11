@@ -96,7 +96,8 @@ to be built using either Java 8 or 11. Adjust the path if necessary.
   
 ```bash  
 JAVA_HOME=/usr/lib/jvm/jdk-11.0.13  
-./gradlew shadowJar```  
+./gradlew shadowJar
+```  
   
 The JAR file will be created at: `./build/libs/ArticleClickStreamApp-0.1-SNAPSHOT-all.jar`  
   
