@@ -3,7 +3,7 @@
 There are three components in this repository:
 - Simple Apache Flink application
 - CLI app for producing sample messages to the specified Kafka topic
-- A `docker-compose.yml` file defining the Apache Flink and Kafka cluster
+- A `docker-compose.yml` file which specifies the services for Apache Flink and Kafka
 
 There are two options how to test this Apache Flink application:
 
