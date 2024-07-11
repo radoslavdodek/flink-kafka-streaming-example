@@ -6,8 +6,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Generates ArticleEvents with article IDs ranging from 1 to 10. The probability of generating an article ID
+ * is proportional to the article ID itself. For instance, article ID 1 will be generated 1 out of 55 times,
+ * article ID 2 will be generated 2 out of 55 times, and so forth.
+ */
 public class ArticleEventGenerator {
-    private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+    private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+    private static final int MAX_ARTICLE_ID = 10;
 
     private final List<Integer> list = new ArrayList<>();
 
@@ -22,7 +29,7 @@ public class ArticleEventGenerator {
 
     private int getRandomElement() {
         if (list.isEmpty()) {
-            fillInList(10);
+            fillInList(MAX_ARTICLE_ID);
         }
 
         int randomIndex = (int) (Math.random() * list.size());
