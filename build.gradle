@@ -77,6 +77,7 @@ dependencies {
     // connectors. These must be in the flinkShadowJar configuration!
     // --------------------------------------------------------------
     flinkShadowJar 'org.apache.flink:flink-connector-kafka:3.2.0-1.19'
+    flinkShadowJar project(':kafka-dummy-producer')
 
     flinkShadowJar "com.amazonaws:aws-kinesisanalytics-runtime:${kdaRuntimeVersion}"
 

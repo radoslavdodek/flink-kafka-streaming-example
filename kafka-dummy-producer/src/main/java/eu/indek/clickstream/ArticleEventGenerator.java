@@ -36,6 +36,14 @@ public class ArticleEventGenerator {
         return list.remove(randomIndex);
     }
 
+    public String[] getNextEventsAsJsonStrings(int n) {
+        String[] events = new String[n];
+        for (int i = 0; i < n; i++) {
+            events[i] = getNextEvent().toJsonString();
+        }
+        return events;
+    }
+
     public ArticleEvent getNextEvent() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
         return new ArticleEvent("" + getRandomElement(), ArticleEvent.Action.CLICK, now.format(ISO_FORMATTER));

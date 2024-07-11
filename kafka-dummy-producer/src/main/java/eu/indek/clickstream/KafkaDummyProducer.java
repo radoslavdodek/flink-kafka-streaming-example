@@ -27,15 +27,16 @@ public class KafkaDummyProducer {
     private static void sendMessage(
             ArticleEvent event, Producer<String, String> producer, String topic)
     {
-        ProducerRecord<String, String> record = new ProducerRecord<>(topic, event.articleId, event.toJsonString());
+        String message = event.toJsonString();
+        ProducerRecord<String, String> record = new ProducerRecord<>(topic, event.articleId, message);
 
         try {
             producer.send(record, (metadata, exception) -> {
                 if (exception != null) {
                     LOG.warn("Error sending event to Kafka", exception);
                 } else {
-                    System.out.printf("Sent message to topic %s partition %d with offset %d%n",
-                            metadata.topic(), metadata.partition(), metadata.offset());
+                    System.out.printf("Sent message to topic %s partition %d with offset %d. Message: %s%n.",
+                            metadata.topic(), metadata.partition(), metadata.offset(), message);
                 }
             });
         } catch (Exception e) {

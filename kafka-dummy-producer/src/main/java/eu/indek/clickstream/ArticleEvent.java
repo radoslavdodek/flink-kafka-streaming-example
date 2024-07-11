@@ -21,10 +21,21 @@ public class ArticleEvent {
     public Action action;
     public String eventTime;
 
+    public ArticleEvent() {
+    }
+
     public ArticleEvent(String articleId, Action action, String eventTime) {
         this.articleId = articleId;
         this.action = action;
         this.eventTime = eventTime;
+    }
+
+    public static ArticleEvent fromJsonString(String jsonString) {
+        try {
+            return JSON.readValue(jsonString, ArticleEvent.class);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     public String toJsonString() {
