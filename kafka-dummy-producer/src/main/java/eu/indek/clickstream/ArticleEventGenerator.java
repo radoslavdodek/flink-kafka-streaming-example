@@ -36,10 +36,10 @@ public class ArticleEventGenerator {
         return list.remove(randomIndex);
     }
 
-    public String[] getNextEventsAsJsonStrings(int n) {
-        String[] events = new String[n];
+    public ArticleEvent[] getNextEvents(int n) {
+        ArticleEvent[] events = new ArticleEvent[n];
         for (int i = 0; i < n; i++) {
-            events[i] = getNextEvent().toJsonString();
+            events[i] = getNextEvent();
         }
         return events;
     }
