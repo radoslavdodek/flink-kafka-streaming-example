@@ -1,3 +1,5 @@
+![](assets/banner.png) 
+
 # Apache Flink / Kafka streaming example  
 
 There are three components in this repository:
