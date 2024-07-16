@@ -1,3 +1,5 @@
+![](https://github.com/radoslavdodek/flink-kafka-streaming-example/actions/workflows/gradle.yml/badge.svg)
+
 ![](assets/banner.png) 
 
 # Apache Flink / Kafka streaming example  
