@@ -71,6 +71,7 @@ dependencies {
     // --------------------------------------------------------------
     implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
     implementation "org.apache.flink:flink-clients:${flinkVersion}"
+    implementation "org.apache.flink:flink-connector-base:${flinkVersion}"
 
     // --------------------------------------------------------------
     // Dependencies that should be part of the shadow jar, e.g.
@@ -81,12 +82,13 @@ dependencies {
 
     flinkShadowJar "com.amazonaws:aws-kinesisanalytics-runtime:${kdaRuntimeVersion}"
 
-    implementation "org.apache.flink:flink-connector-base:${flinkVersion}"
     flinkShadowJar "org.apache.flink:flink-connector-kinesis:${awsConnectorVersion}"
 
+    // Logging
     implementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
     implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+
     // Add test dependencies here.
     // testCompile "junit:junit:4.12"
 }

@@ -19,14 +19,38 @@ public class ArticleEvent {
 
     public String articleId;
     public Action action;
-    public String eventTime;
+    public Long eventTime;
 
     public ArticleEvent() {
     }
 
-    public ArticleEvent(String articleId, Action action, String eventTime) {
+    public ArticleEvent(String articleId, Action action, Long eventTime) {
         this.articleId = articleId;
         this.action = action;
+        this.eventTime = eventTime;
+    }
+
+    public String getArticleId() {
+        return articleId;
+    }
+
+    public Action getAction() {
+        return action;
+    }
+
+    public Long getEventTime() {
+        return eventTime;
+    }
+
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
+    }
+
+    public void setEventTime(Long eventTime) {
         this.eventTime = eventTime;
     }
 

@@ -1,5 +1,11 @@
 package eu.indek.clickstream;
 
+import eu.indek.clickstream.model.ArticleClickCount;
+import eu.indek.clickstream.model.ArticleClickCountResult;
+import eu.indek.clickstream.serialization.ArticleEventDeserializationSchema;
+import eu.indek.clickstream.sink.LogSink;
+import eu.indek.clickstream.transformation.CountAggregator;
+import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -12,14 +18,17 @@ import org.apache.flink.connector.datagen.source.DataGeneratorSource;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
-import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.LocalStreamEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.sink.PrintSink;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 public class DataStreamJob {
-
     private static final String KAFKA_BROKER = "kafka:9092";
 
     private static final String KAFKA_INPUT_TOPIC = "input-topic";
@@ -36,68 +45,70 @@ public class DataStreamJob {
             env.setParallelism(1);
         }
 
-        // Set up the source (`input-topic`)
-        Source<String, ?, ?> source = createSource(env);
-
-        // Set up the sink (`output-topic`)
-        Sink<String> sink = createSink(env);
+        // Set up the source (print to console or read from Kafka topic `input-topic`)
+        Source<ArticleEvent, ?, ?> source = createSource(env);
 
         // Step 1.
         // Get the DataStreamSource from your source
-        DataStreamSource<String> dataStreamSource =
-                env.fromSource(source, WatermarkStrategy.noWatermarks(), "Source");
+        WatermarkStrategy<ArticleEvent> watermarkStrategy = WatermarkStrategy
+                .<ArticleEvent>forBoundedOutOfOrderness(Duration.ZERO)
+                .withTimestampAssigner((SerializableTimestampAssigner<ArticleEvent>) (event, timestamp) -> event.getEventTime());
+
+        DataStream<ArticleEvent> sourceStream = env
+                .fromSource(source, watermarkStrategy, "sourceStream")
+                .uid("sourceStream");
+
+        // Print the source stream for debugging purposes
+        sourceStream.sinkTo(new LogSink<>("Received event: {}"));
 
         // Step 2.
-        // Transform the data
-        // In this example, we will convert the JSON to a CSV
-        SingleOutputStreamOperator<String> transformedStream = dataStreamSource.map(value -> {
-            ArticleEvent articleEvent = ArticleEvent.fromJsonString(value);
-            if (articleEvent != null) {
-                // Convert to CSV format:
-                return String.format("%s;%s;%s", articleEvent.articleId, articleEvent.action, articleEvent.eventTime);
-            } else {
-                return null;
-            }
-        });
+        // Aggregate the data by articleId each 5 seconds (tumbling window)
+        SingleOutputStreamOperator<String> aggregatedStream = sourceStream
+                .keyBy(a -> a.articleId)
+                .window(TumblingEventTimeWindows.of(Duration.of(5, ChronoUnit.SECONDS)))
+                .aggregate(new CountAggregator<>(), new ArticleClickCountResult())
+                .map(ArticleClickCount::toJsonString)
+                .uid("aggregatedStream");
 
         // Step 3.
-        // Sink
-        transformedStream.sinkTo(sink);
+        // Sink (print to console or write to Kafka topic `output-topic`)
+        aggregatedStream.sinkTo(createSink(env));
 
         env.execute("DataStreamJob");
     }
 
-    private static Source<String, ?, ?> createSource(StreamExecutionEnvironment env) {
+    private static Source<ArticleEvent, ?, ?> createSource(StreamExecutionEnvironment env) {
         if (env instanceof LocalStreamEnvironment) {
             // Local environment
+            final int recordsPerSecond = 1; // Generate 1 event per second
             final ArticleEventGenerator eventGenerator = new ArticleEventGenerator();
-            String[] elements = eventGenerator.getNextEventsAsJsonStrings(55);
-            FromElementsGeneratorFunction<String> stringFromElementsGeneratorFunction =
-                    new FromElementsGeneratorFunction<>(TypeInformation.of(String.class), elements);
+            ArticleEvent[] elements = eventGenerator.getNextEvents(55, recordsPerSecond);
+            FromElementsGeneratorFunction<ArticleEvent> stringFromElementsGeneratorFunction =
+                    new FromElementsGeneratorFunction<>(TypeInformation.of(ArticleEvent.class), elements);
 
             return
                     new DataGeneratorSource<>(
                             stringFromElementsGeneratorFunction,
                             elements.length,
-                            RateLimiterStrategy.perSecond(1), // Generate 1 event per second
-                            Types.STRING
+                            RateLimiterStrategy.perSecond(recordsPerSecond),
+                            Types.POJO(ArticleEvent.class)
                     );
         } else {
             // Non local environment
-            return
-                    KafkaSource.<String>builder()
-                            .setBootstrapServers(KAFKA_BROKER)
-                            .setTopics(KAFKA_INPUT_TOPIC)
-                            .setGroupId("article-click-stream-flink-job")
-                            .setValueOnlyDeserializer(new SimpleStringSchema())
-                            .build();
+            return KafkaSource.<ArticleEvent>builder()
+                    .setBootstrapServers(KAFKA_BROKER)
+                    .setTopics(KAFKA_INPUT_TOPIC)
+                    .setGroupId("article-click-stream-flink-job")
+                    .setStartingOffsets(OffsetsInitializer.latest())
+                    .setValueOnlyDeserializer(new ArticleEventDeserializationSchema())
+                    .build();
         }
     }
 
     private static Sink<String> createSink(StreamExecutionEnvironment env) {
         if (env instanceof LocalStreamEnvironment) {
             // Local environment
-            return new PrintSink<>("LocalSink");
+            return new LogSink<>("Aggregation: {}");
         } else {
             // Non local environment
             return KafkaSink.<String>builder()
@@ -111,5 +122,6 @@ public class DataStreamJob {
                     .build();
         }
     }
+
 
 }

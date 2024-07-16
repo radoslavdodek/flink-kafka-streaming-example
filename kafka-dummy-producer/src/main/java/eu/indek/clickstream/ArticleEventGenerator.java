@@ -2,7 +2,8 @@ package eu.indek.clickstream;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +13,6 @@ import java.util.List;
  * article ID 2 will be generated 2 out of 55 times, and so forth.
  */
 public class ArticleEventGenerator {
-    private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
     private static final int MAX_ARTICLE_ID = 10;
 
     private final List<Integer> list = new ArrayList<>();
@@ -36,16 +35,21 @@ public class ArticleEventGenerator {
         return list.remove(randomIndex);
     }
 
-    public String[] getNextEventsAsJsonStrings(int n) {
-        String[] events = new String[n];
+    public ArticleEvent[] getNextEvents(int n, int eventsPerSecond) {
+        int timeDeltaMilliseconds = 1000 / eventsPerSecond;
+        ArticleEvent[] events = new ArticleEvent[n];
         for (int i = 0; i < n; i++) {
-            events[i] = getNextEvent().toJsonString();
+            events[i] = getNextEvent(timeDeltaMilliseconds * i);
         }
         return events;
     }
 
-    public ArticleEvent getNextEvent() {
+    public ArticleEvent getNextEvent(int timeDeltaMilliseconds) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
-        return new ArticleEvent("" + getRandomElement(), ArticleEvent.Action.CLICK, now.format(ISO_FORMATTER));
+        return new ArticleEvent(
+                "" + getRandomElement(),
+                ArticleEvent.Action.CLICK,
+                now.plus(timeDeltaMilliseconds, ChronoUnit.MILLIS).toInstant(ZoneOffset.UTC).toEpochMilli()
+        );
     }
 }

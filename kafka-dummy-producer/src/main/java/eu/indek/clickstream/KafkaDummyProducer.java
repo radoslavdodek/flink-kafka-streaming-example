@@ -56,7 +56,7 @@ public class KafkaDummyProducer {
 
             //noinspection InfiniteLoopStatement
             while (true) {
-                ArticleEvent event = eventGenerator.getNextEvent();
+                ArticleEvent event = eventGenerator.getNextEvent(0);
                 sendMessage(event, kafkaProducer, topic);
 
                 //noinspection BusyWait

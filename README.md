@@ -19,14 +19,25 @@ This is the simplest way to test your Flink job. Execute the `main` method of th
 You should see output similar to the following in your console:
 
 ```
-ExecutionGraph - Source -> Map -> Sink: Writer (1/1) switched from INITIALIZING to RUNNING.
-LocalSink> 8;CLICK;2024-07-11T11:56:55Z
-LocalSink> 5;CLICK;2024-07-11T11:56:55Z
-LocalSink> 7;CLICK;2024-07-11T11:56:55Z
-LocalSink> 7;CLICK;2024-07-11T11:56:55Z
-LocalSink> 6;CLICK;2024-07-11T11:56:55Z
-LocalSink> 8;CLICK;2024-07-11T11:56:55Z
-LocalSink> 9;CLICK;2024-07-11T11:56:55Z
+ExecutionGraph - Source: sourceStream -> Sink: Writer (1/1) switched from INITIALIZING to RUNNING.
+Received event: ArticleId: 8, Action: CLICK, EventTime: 1721157211797
+Received event: ArticleId: 7, Action: CLICK, EventTime: 1721157212843
+Received event: ArticleId: 8, Action: CLICK, EventTime: 1721157213843
+Received event: ArticleId: 9, Action: CLICK, EventTime: 1721157214843
+Received event: ArticleId: 10, Action: CLICK, EventTime: 1721157215843
+Aggregation: {"articleId":"8","count":2,"windowStart":1721157210000,"windowEnd":1721157215000}
+Aggregation: {"articleId":"7","count":1,"windowStart":1721157210000,"windowEnd":1721157215000}
+Aggregation: {"articleId":"9","count":1,"windowStart":1721157210000,"windowEnd":1721157215000}
+Received event: ArticleId: 8, Action: CLICK, EventTime: 1721157216843
+Received event: ArticleId: 6, Action: CLICK, EventTime: 1721157217843
+Received event: ArticleId: 4, Action: CLICK, EventTime: 1721157218843
+Received event: ArticleId: 4, Action: CLICK, EventTime: 1721157219843
+Received event: ArticleId: 3, Action: CLICK, EventTime: 1721157220843
+Aggregation: {"articleId":"10","count":1,"windowStart":1721157215000,"windowEnd":1721157220000}
+Aggregation: {"articleId":"8","count":1,"windowStart":1721157215000,"windowEnd":1721157220000}
+Aggregation: {"articleId":"4","count":2,"windowStart":1721157215000,"windowEnd":1721157220000}
+Aggregation: {"articleId":"6","count":1,"windowStart":1721157215000,"windowEnd":1721157220000}
+...
 ```
 
 ## 2. Running the Flink Application in Docker
@@ -80,7 +91,7 @@ Now your `input-topic` is receiving messages in the following format:
 {  
   "articleId": "9",  
   "action": "CLICK",  
-  "eventTime": "2024-07-10T20:42:16Z"
+  "eventTime": 1721157211797
 }  
 ```  
   
