@@ -13,11 +13,13 @@ for uploaded_jar in existing_jars:
         print("\n>>> Deleting existing jar: " + uploaded_jar['id'])
         response = requests.delete(base_url + "/jars/" + uploaded_jar['id'])
         print("Response code: ", response.status_code)
+        if response.status_code == requests.codes.ok:
+            print("Jar deleted successfully")
 
 # Upload the new jar
 with open(jar_file_path, 'rb') as file:
     files = {'jarfile': file}
-    print("\n>>> Uploading new jar: " + jar_file_path)
+    print("\n>>> Uploading the jar file: " + jar_file_path)
     upload_response = requests.post(base_url + "/jars/upload", files=files).json()
     print(upload_response)
     if upload_response['status'] == "success":
@@ -33,14 +35,17 @@ with open(jar_file_path, 'rb') as file:
             print("\n>>> Cancelling currently running job: ", job['id'])
             response = requests.get(base_url + "/jobs/" + job['id'] + '/yarn-cancel')
             print("Response code: ", response.status_code)
+            if response.status_code == requests.codes.accepted:
+                print("Job cancelled successfully")
 
     # Submit the job
     job_data = {
         "parallelism": "1"
     }
-    print("\n>>> Submitting job")
+    jar_id = upload_response['filename'].split("/")[-1]
+    print("\n>>> Submitting job:", jar_id)
     submit_job_response = requests.post(
-        base_url + "/jars/" + upload_response['filename'].split("/")[-1] + "/run", data=files).json()
+        base_url + "/jars/" + jar_id + "/run", data=files).json()
     print("Response: ", submit_job_response)
 
     # Get the job status
