@@ -99,8 +99,8 @@ Now your `input-topic` is receiving messages in the following format:
   
 This sample project contains a simple Flink application that:  
 - Reads from the `input-topic` containing messages in JSON format  
-- Transforms these messages into CSV format  
-- Writes the transformed messages to the `output-topic`  
+- Aggregates the number of clicks per article in a 5-second windows
+- Writes the aggregated results to the `output-topic`.
   
 See the main application class: [DataStreamJob](./src/main/java/eu/indek/clickstream/DataStreamJob.java)  
   
